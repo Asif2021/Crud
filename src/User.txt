@@ -1,0 +1,126 @@
+User Registration 
+import React, {useState} from 'react'
+import Button from '../Container/Components/Custom/Button'
+import Heading from '../Container/Components/Custom/Heading'
+import Input from '../Container/Components/Custom/Input'
+
+
+const UserRegistration = () => {
+
+    const [userRegistration, setUserRegistration] = useState({
+        userName:'',
+        email: '',
+        password:''
+    });
+    
+    const [records, setRecords] = useState([]);
+
+    const handleInput = (e)=> {
+        const name = e.target.name;
+        const value = e.target.value;
+        setUserRegistration({...userRegistration, [name]: value})
+            }
+
+    const submit = (e) => {
+        const newRecord = {...userRegistration, id:new Date().getTime().toString()}
+        setRecords([...records, newRecord])
+        setUserRegistration({userName:'',
+        email: '',
+        password:''});
+    }
+    return (
+        <>
+        <div className='container'>
+            <div className='text-uppercase text-black'>  
+            <Heading text = {<h3> User Registration Page </h3>} /> <br /><br />
+            <div>
+                <label htmlFor="userName"> UserName</label>
+                <Input type='text' autoComplete = "off" name = 'userName' id='userName'
+                value={userRegistration.userName} onChange={handleInput}  /> <br />
+                
+                <label htmlFor="email"> Email</label>
+                <Input type='email' autoComplete = "off" name = 'email' id = 'email'
+                value={userRegistration.email} onChange={handleInput}   /> <br />
+
+                <label htmlFor="password"> Password</label>
+                <Input type='text' autoComplete = "off" name = 'password' id = 'password'
+                value={userRegistration.password} onChange={handleInput}  /> <br />
+
+                <Button text='Register' onClick={submit} />
+
+
+
+            </div>
+            </div>
+            {
+                    records.map((curElem)=>{
+                        
+                        return(
+                            <div key={curElem.id}>
+                                <table>
+                                <td>{curElem.userName} </td>
+                                <td>{curElem.email} </td>
+                                <td>{curElem.password} </td>
+                                </table>
+                            </div>
+                        )
+                    })
+            }
+        </div>
+        </>
+    )
+}
+
+export default UserRegistration
+
+
+User Login
+import React, {useState, useRef} from 'react'
+import {useHistory} from 'react-router-dom'
+import Button from '../Container/Components/Custom/Button'
+import Heading from '../Container/Components/Custom/Heading'
+import Input from '../Container/Components/Custom/Input'
+
+
+const Login = () => {
+    const [data, setData] = useState();
+    const inputRef = useRef(null);
+    const History = useHistory();
+
+    const database = {
+        userName: 'admin',
+        password: '123'
+    }
+
+    // submit is called whenever clicked on click me button
+    const submit = () => {
+         const value = inputRef.current.value;
+        
+        if ( value == database.userName && data == database.password) {
+           History.push('/');
+        } else {
+            alert('Credential does not match')
+        }
+    }
+    
+    return (
+        <>
+        
+        <div>
+            <Heading text = {<h1> <span className='text-primary'> Login </span>  <span className='text-danger'> Page </span> </h1>}/><br />
+{/* uncontrolled Input  */}
+            <label htmlFor="userName"> User Name</label><br />
+            <input type='text' ref={inputRef} />
+<br />
+{/* controlled Input */}
+            <label htmlFor="password"> Password</label><br />
+            <Input type='text' name='password' onChange={(e)=>{setData(e.target.value)}} value={data} />
+<br />
+            <Button text='Click Me' onClick={submit} />
+
+        </div>
+        </>
+    )
+}
+
+export default Login
