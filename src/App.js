@@ -16,6 +16,7 @@ import Login from './Components/Pages/Login';
 function App() {
   return (
     <div className="App">
+    
     <Router>
       <Navbar/>
 
